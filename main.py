@@ -1,16 +1,17 @@
-# This is a sample Python script.
+from fastapi import FastAPI
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+app = FastAPI()
 
+test_list = [0] * 10
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+@app.get("/")               # 데코레이터.
+async def root():           # async는 비동기 선언.
+    return {"message": "Hello World"}
 
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+@app.get("/items/{item_id}")
+async def read_item(item_id : int):
+    if item_id >= 10 or item_id < 0:
+        return {"message" : "ERROR404"}
+    else:
+        test_list[item_id] += 1
+    return {"item_id:": test_list[item_id]}
